@@ -42,7 +42,7 @@ var start = function(){
 
 var checkForPayment = function(receiver){
 	
-	var url = AppConfig.insight + 'insight-api/addr/' + receiver.dash_payment_address;
+	var url = AppConfig.insight + 'insight-api-dash/addr/' + receiver.dash_payment_address;
 
 	log.debug("Checking block chain for payment to " + receiver.dash_payment_address);
 
