@@ -42,7 +42,7 @@ var createReceiver = function(username, fiatCode, fiatAmount, description, callb
 	});
 };
 
-var invokePaymentCallback = function(receiver){
+var invokePaymentCallback = function(receiver, tx){
 	Request({
 		url: receiver.callback_url,
 		method: 'post',
@@ -57,7 +57,8 @@ var invokePaymentCallback = function(receiver){
 			created_date: receiver.created_date,
 			description: receiver.description,
 			payment_received_amount_duffs: receiver.payment_received_amount_duffs,
-			payment_date: receiver.payment_date
+			payment_date: receiver.payment_date,
+			txlock: tx.txlock
 		},
 		json: true
 	}, function(err, resp){
@@ -98,7 +99,7 @@ var processReceivedPayment = function(tx, receiverId, amountDuffs){
 			log.error('Error trying to update a receiver\'s payment. Details: ' + err);
 		}else{
 
-			invokePaymentCallback(receiver);
+			invokePaymentCallback(receiver, tx);
 			updateCache(receiver);
 		}
 	});
