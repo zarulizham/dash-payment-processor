@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>dash-payment-service test</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="http://dev-test.dash.org:3001/socket.io/socket.io.js"></script>
+
+    <script type="text/javascript">
+
+        eventToListenTo = 'callback';
+        room = 'dps';
+
+        receivers = []; // queue of receivers to look for....
+
+        var socket = io("http://dev-test.dash.org:3001/");
+        socket.on('connect', function() {
+            // Join the room.
+            socket.emit('subscribe', room);
+            console.log("listening for '" + eventToListenTo + "' in '" + room + "'");
+        });
+
+        socket.on(eventToListenTo, function(data) {
+
+            var callback = jQuery.parseJSON(data);
+            console.log(callback.receiver_id);
+
+            if (receivers.indexOf(callback.receiver_id) > -1) {
+
+                document.getElementById('websocketCallback').value = data;
+
+                var index = receivers.indexOf(callback.receiver_id);
+                receivers.splice(index, 1);
+
+            }
+
+        });
+
+
+        $(document).ready(function() {
+
+            $('#formSubmit').click(function() {
+
+                document.getElementById('response').placeholder = "waiting for response...";
+                createReceiver();
+
+                document.getElementById('websocketCallback').value = "";
+                document.getElementById('websocketCallback').placeholder = "waiting for websocket callback...";
+
+            });
+        });
+
+        function createReceiver() {
+
+            data = {
+                "currency": document.getElementById('createReceiver_currency').value,
+                "amount": document.getElementById('createReceiver_amount').value,
+                "email": document.getElementById('createReceiver_email').value,
+                "description": document.getElementById('createReceiver_description').value,
+                "callbackUrl": document.getElementById('createReceiver_callbackUrl').value
+            };
+
+            $.ajax({
+                type: "POST",
+                url: document.getElementById('createReceiver_apiEndpoint').value,
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                crossDomain: true,
+                dataType: "json",
+                success: function (data, status, jqXHR) {
+
+                    receivers.push(data.receiver_id);
+                    document.getElementById('response').innerHTML = JSON.stringify(data);
+
+                },
+                error: function (jqXHR, status, error) {
+                    console.log(jqXHR);
+                    var err = eval("(" + jqXHR.responseText + ")");
+                    alert(err.Message);
+
+                }
+            });
+        }
+
+    </script>
+
+</head>
+<body>
+
+<div class="row" style="margin-top:4em;">
+    <div class="col-xs-8 col-xs-offset-2">
+
+        <form>
+            <div class="form-group">
+                <label for="createReceiver_currency">currency:</label>
+                <input type="text" class="form-control" id="createReceiver_currency" value="USD" placeholder="USD">
+            </div>
+            <div class="form-group">
+                <label for="createReceiver_amount">amount:</label>
+                <input type="text" class="form-control" id="createReceiver_amount" value="100.07" placeholder="100.07">
+            </div>
+            <div class="form-group">
+                <label for="createReceiver_email">email:</label>
+                <input type="text" class="form-control" id="createReceiver_email" value="user@example.com" placeholder="user@example.com">
+            </div>
+            <div class="form-group">
+                <label for="createReceiver_description">description:</label>
+                <input type="text" class="form-control" id="createReceiver_description" value="3 Month Subscription" placeholder="3 Month Subscription">
+            </div>
+            <div class="form-group">
+                <label for="createReceiver_callbackUrl">callbackUrl:</label>
+                <input type="text" class="form-control" id="createReceiver_callbackUrl" value="http://localhost:3001/dash-payment-service/cb" placeholder="http://localhost:3001/dash-payment-service/cb">
+            </div>
+            <hr />
+            <div class="form-group">
+                <label for="createReceiver_apiEndpoint">API Endpoint:</label>
+                <input type="text" class="form-control" id="createReceiver_apiEndpoint" value="http://dev-test.dash.org:3001/dash-payment-service/createReceiver" placeholder="http://dev-test.dash.org:3001/dash-payment-service/createReceiver">
+            </div>
+
+            <div type="submit" class="btn btn-primary" id="formSubmit">Submit</div>
+        </form>
+
+    </div>
+</div>
+
+<div class="row" style="margin-top:4em;">
+    <div class="col-xs-8 col-xs-offset-2">
+
+        <form>
+            <div class="form-group">
+                <label for="response">response:</label>
+                <textarea class="form-control" id="response" rows="3" placeholder="no request submitted yet..."></textarea>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div class="row" style="margin-top:1em;">
+    <div class="col-xs-8 col-xs-offset-2">
+
+        <form>
+            <div class="form-group">
+                <label for="websocketCallback">websocket callback:</label>
+                <textarea class="form-control" id="websocketCallback" rows="15" placeholder="no websocket responses yet..."></textarea>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+</body>
+</html>
