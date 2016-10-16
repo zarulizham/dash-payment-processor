@@ -4,7 +4,7 @@ var bitcore = require('bitcore-lib-dash');
 var config = {
     development: {
         app: {
-            name: 'dash-payment=gateway'
+            name: 'dash-payment-service'
         },
         insight: 'http://localhost:3001/',
         wallet: {
