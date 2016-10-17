@@ -7,10 +7,6 @@ var config = {
             name: 'dash-payment-service'
         },
         insight: 'http://localhost:3001/',
-        wallet: {
-            seed: 'xpub661MyMwAqRbcEorCw5Bqik47NhE4RCgCgxqvM3DqfpUvVo7dEk7HL5BmqLJCT4EvBUK2pTewJjpd4Z64nXDTaqQuAhuYH4PFdTenCkHzuQa', // ELECTRUM
-            network: bitcore.Networks.testnet,
-        },
         port: process.env.PORT || 9001,
         logLevel: 'DEBUG', // EMERGENCY|ALERT|CRITICAL|ERROR|WARNING|NOTICE|INFO|DEBUG
         worldcoin: {

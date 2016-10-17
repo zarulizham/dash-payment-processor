@@ -2,21 +2,16 @@ var AppConfig         = require('../config/AppConfig');
 var Logger            = require('log');
 var bitcore           = require('bitcore-lib-dash');
 var log               = new Logger(AppConfig.logLevel);
-var CounterRepository = require('../repository/CounterRepository');
-var HDWallet          = require('../lib/HDWallet');
+var Wallet            = require('../lib/wallet');
 
-var getNextAddress = function (callback) {
+var createNewAddress = function (callback) {
 
-    CounterRepository.getAndIncrement('hd-wallet-child', function(err, child){
+    var wallet = new Wallet();
+    wallet.initialize();
 
-        log.debug('Getting new deposit address at position ' + child + ' with seed: ' + AppConfig.wallet.seed);
-
-        // Generate the next address (using Electrum's m/0/i paths for receiving addresses)
-        // (returns Bitcore Address object: https://bitcore.io/api/lib/address)
-        var nextAddress = HDWallet.GetAddress(AppConfig.wallet.seed, child);
-
-        if (bitcore.Address.isValid(nextAddress)) {
-            return callback(null, nextAddress.toString());
+    wallet.createAddress(function(err, res) {
+        if (bitcore.Address.isValid(res.address)) {
+            return callback(null, res.address.toString());
         }else{
             return callback('Unable to derive a proper deposit address.')
         }
@@ -24,5 +19,5 @@ var getNextAddress = function (callback) {
 };
 
 module.exports = {
-    getNextAddress: getNextAddress
+    createNewAddress: createNewAddress
 };

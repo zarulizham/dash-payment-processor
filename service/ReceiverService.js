@@ -11,7 +11,7 @@ var CacheRepository       = require('../repository/CacheRepository');
 var log = new Logger(AppConfig.logLevel)
 
 var createReceiver = function(username, fiatCode, fiatAmount, description, callbackUrl, callback){
-	WalletService.getNextAddress(function(err, address){
+	WalletService.createNewAddress(function(err, address){
 		if ( err ){
 			return callback(err, null);
 		}else{
