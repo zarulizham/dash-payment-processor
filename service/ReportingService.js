@@ -1,26 +1,28 @@
 var AppConfig      = require('../config/AppConfig');
 var Logger         = require('log');
-var dbPool        = require('../repository/Database').connect();
+var dbPool         = require('../repository/Database').connect();
+var Wallet         = require('../lib/wallet');
 
 var log = new Logger(AppConfig.logLevel);
 
 var generateReport = function(opts, callback){
 
+    // TODO - implement better authentication
+
     console.log(opts);
 
-    if (!opts.xpubkey) {
-        return callback('missing wallet seed', null);
-    }
+    if (!opts.xPubKey) return callback('missing xPubKey', null);
 
-    if (opts.xpubkey != AppConfig.wallet.seed) {
-        return callback('invalid wallet seed', null);
-    }
+    var wallet = new Wallet();
+    wallet.initialize();
 
-    log.debug('Generating Report: ' + opts.xpubkey + " order by created_date " + opts.order);
+    if (opts.xPubKey != wallet.xPubKey) return callback('invalid wallet seed', null);
+
+    log.debug('Generating Report for ' + opts.xPubKey);
 
     dbPool.getConnection(function(err,connection) {
 
-        connection.query("SELECT * FROM receiver ORDER BY created_date " + opts.order + " LIMIT " + opts.limit, function(err,result){
+        connection.query("SELECT * FROM receiver ORDER BY created_date DESC LIMIT 2000", function(err,result){
             if ( !err ){
                 console.log("success!");
                 connection.release();

@@ -2,7 +2,6 @@ var AppConfig          = require('../config/AppConfig');
 var Logger             = require('log');
 var Database           = require('../repository/Database');
 var CacheRepository    = require('../repository/CacheRepository');
-var HDWallet           = require('../lib/HDWallet');
 var bitcore            = require('bitcore-lib-dash');
 var BlockChainObserver = require('./BlockChainObserver');
 
