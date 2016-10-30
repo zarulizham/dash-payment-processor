@@ -4,17 +4,24 @@ var bitcore           = require('bitcore-lib-dash');
 var log               = new Logger(AppConfig.logLevel);
 var Wallet            = require('../lib/wallet');
 
-var createNewAddress = function (callback) {
+var MerchantRepository = require('../repository/MerchantRepository');
+
+var createNewAddress = function (apiKey, callback) {
 
     var wallet = new Wallet();
-    wallet.initialize();
 
-    wallet.createAddress(function(err, res) {
-        if (bitcore.Address.isValid(res.address)) {
-            return callback(null, res.address.toString());
-        }else{
-            return callback('Unable to derive a proper deposit address.')
-        }
+    MerchantRepository.findMerchantApi(apiKey, {}, function(err, res){
+        if (err) return callback(err, null);
+
+        wallet.initialize(res.wallet); // import server wallet for apiKey
+
+        wallet.createAddress(function(err, res) {
+            if (bitcore.Address.isValid(res.address)) {
+                return callback(null, res.address.toString());
+            }else{
+                return callback('Unable to derive a proper deposit address.')
+            }
+        });
     });
 };
 
