@@ -148,4 +148,17 @@ describe('Bitcore Wallet Service', function() {
         });
     });
 
+    it('will provide join wallet', function(done) {
+        var wallet = new Wallet();
+        var opts = {
+            name: 'uniquely generated id4',
+            secret: '6U4t5hZdEEjPiTTKXNryEQXK47JFrz13sXyDDafWBE36TAAJoM3YYCV8ksngcJXVwgJeEbJuhdT'
+        };
+        wallet.joinWallet(opts, function(err, res) {
+            res.should.not.equal(null);
+            console.log(res);
+            done();
+        });
+    });
+
 });

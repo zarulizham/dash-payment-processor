@@ -10,7 +10,17 @@ CREATE TABLE
         PRIMARY KEY (username)
     )
     ENGINE=InnoDB DEFAULT CHARSET=utf8;
-    
+
+CREATE TABLE
+    merchant
+    (
+        apiKey VARCHAR(255) NOT NULL,
+        wallet TEXT NOT NULL,
+        created_date DATETIME NOT NULL,
+        PRIMARY KEY (apiKey)
+    )
+    ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE
     receiver
     (
