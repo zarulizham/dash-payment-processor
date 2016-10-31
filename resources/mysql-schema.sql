@@ -6,6 +6,7 @@ CREATE TABLE
     user
     (
         username VARCHAR(255) NOT NULL,
+        apiKey VARCHAR(255) NOT NULL,
         created_date DATETIME NOT NULL,
         PRIMARY KEY (username)
     )
@@ -25,6 +26,7 @@ CREATE TABLE
     receiver
     (
         receiver_id VARCHAR(255) NOT NULL,
+        api_key VARCHAR(255) NOT NULL,
         username VARCHAR(255) NOT NULL,
         dash_payment_address VARCHAR(255) NOT NULL,
         amount_fiat DECIMAL(19,2),
@@ -32,6 +34,7 @@ CREATE TABLE
         base_fiat DECIMAL(19,2) NOT NULL,
         amount_duffs bigint NOT NULL,
         payment_received_amount_duffs bigint,
+        payment_received_txid VARCHAR(255),
         created_date DATETIME NOT NULL,
         payment_date DATETIME,
         description VARCHAR(255),

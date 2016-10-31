@@ -5,9 +5,9 @@ var AppConfig     = require('../config/AppConfig');
 var log = new Logger(AppConfig.logLevel)
 
 
-var createUser = function(username, connection, callback){
-	log.debug('Creating user ' + username);
-	connection.query("insert into user set username = ?, created_date = NOW()", [username], function(err,results){
+var createUser = function(username, apiKey, connection, callback){
+	log.debug('Creating user ' + username + ' with apiKey: ' + apiKey);
+	connection.query("insert into user set username = ?, apiKey = ?, created_date = NOW()", [username, apiKey], function(err,results){
 		callback(err,results);
 	});
 };
@@ -26,12 +26,12 @@ var findUser = function(username, connection, callback){
         });
 };
 
-var findOrCreate = function(username, callback){
+var findOrCreate = function(username, apiKey, callback){
 
 	dbPool.getConnection(function(err,connection){
         findUser(username, connection, function(err, user){
         	if ( !user ){
-        		createUser(username, connection, function(err, results){
+        		createUser(username, apiKey, connection, function(err, results){
         			if ( !err ){
         				findUser(username, connection, function(err, user){
         					connection.release();

@@ -10,8 +10,8 @@ var CacheRepository       = require('../repository/CacheRepository');
 
 var log = new Logger(AppConfig.logLevel)
 
-var createReceiver = function(apiKey, username, fiatCode, fiatAmount, description, callbackUrl, callback){
-	WalletService.createNewAddress(apiKey, function(err, address){
+var createReceiver = function(api_key, username, fiatCode, fiatAmount, description, callbackUrl, callback){
+	WalletService.createNewAddress(api_key, function(err, address){
 		if ( err ){
 			return callback(err, null);
 		}else{
@@ -20,6 +20,7 @@ var createReceiver = function(apiKey, username, fiatCode, fiatAmount, descriptio
 				var amountDuffs = (fiatAmount / value) * 100000000
 				var receiver = {
 					receiver_id: RandomString.generate(32),
+                    api_key: api_key,
 					username: username,
 					dash_payment_address: address,
 					amount_fiat: fiatAmount,
@@ -94,7 +95,7 @@ var updateCache = function(receiver){
 
 var processReceivedPayment = function(tx, receiverId, amountDuffs){
 
-	ReceiverRepository.updatePayment(receiverId, amountDuffs, function(err, receiver){
+	ReceiverRepository.updatePayment(tx, receiverId, amountDuffs, function(err, receiver){
 		if ( err ){
 			log.error('Error trying to update a receiver\'s payment. Details: ' + err);
 		}else{
