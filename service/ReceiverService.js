@@ -59,6 +59,7 @@ var invokePaymentCallback = function(receiver, tx){
 			description: receiver.description,
 			payment_received_amount_duffs: receiver.payment_received_amount_duffs,
 			payment_date: receiver.payment_date,
+			txid: tx.txid,
 			txlock: tx.txlock
 		},
 		json: true

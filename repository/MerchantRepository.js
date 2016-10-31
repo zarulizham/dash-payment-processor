@@ -5,15 +5,15 @@ var AppConfig     = require('../config/AppConfig');
 var log = new Logger(AppConfig.logLevel)
 
 
-var createMerchant = function(apiKey, wallet, connection, callback){
-    log.debug('Creating merchant ' + apiKey);
-    connection.query("insert into merchant set apiKey = ?, wallet = ?, created_date = NOW()", [apiKey, wallet], function(err,results){
+var createMerchant = function(api_key, wallet, connection, callback){
+    log.debug('Creating merchant ' + api_key);
+    connection.query("insert into merchant set api_key = ?, wallet = ?, created_date = NOW()", [api_key, wallet], function(err,results){
         callback(err,results);
     });
 };
 
-var findMerchant = function(apiKey, wallet, connection, callback){
-    connection.query("select * from merchant where apiKey = ?", [apiKey], function(err,result){
+var findMerchant = function(api_key, wallet, connection, callback){
+    connection.query("select * from merchant where api_key = ?", [api_key], function(err,result){
         if ( !err ){
             if ( result.length === 0 ){
                 return callback(err, null);
@@ -26,10 +26,10 @@ var findMerchant = function(apiKey, wallet, connection, callback){
     });
 };
 
-var findMerchantApi = function(apiKey, wallet, callback){
+var findMerchantApi = function(api_key, wallet, callback){
 
     dbPool.getConnection(function(err,connection){
-        findMerchant(apiKey, wallet, connection, function(err, result){
+        findMerchant(api_key, wallet, connection, function(err, result){
             if ( !result ){
                 return callback('Error: Merchant API Not Found.', null);
             }else{
@@ -39,14 +39,14 @@ var findMerchantApi = function(apiKey, wallet, callback){
     });
 };
 
-var findOrCreateMerchant = function(apiKey, wallet, callback){
+var findOrCreateMerchant = function(api_key, wallet, callback){
 
     dbPool.getConnection(function(err,connection){
-        findMerchant(apiKey, wallet, connection, function(err, user){
+        findMerchant(api_key, wallet, connection, function(err, user){
             if ( !user ){
-                createMerchant(apiKey, wallet, connection, function(err, results){
+                createMerchant(api_key, wallet, connection, function(err, results){
                     if ( !err ){
-                        findMerchant(apiKey, wallet, connection, function(err, user){
+                        findMerchant(api_key, wallet, connection, function(err, user){
                             connection.release();
                             return callback(err, user);
                         });

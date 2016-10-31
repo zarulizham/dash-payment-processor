@@ -57,6 +57,9 @@ var setPayment = function(receiver, amountDuffs, callback){
 };
 
 var updatePayment = function(tx, receiverId, amountDuffs, callback){
+	var txid = tx.txid;
+	console.log("txid: " + txid);
+
 	dbPool.getConnection(function(err,connection){
 		getReceiver(receiverId, connection, function(err, receiver){
 			if ( err ){
@@ -71,8 +74,9 @@ var updatePayment = function(tx, receiverId, amountDuffs, callback){
 			}
 
 			// TODO - if multiple transactions are sent to single payment address this will only show the most recent.
+			console.log("updating receiver with txid: " + txid);
 
-            connection.query("update receiver set payment_received_amount_duffs = ?, payment_received_txid = ?, payment_date = NOW() where receiver_id = ?", [receiver.payment_received_amount_duffs, txid, receiverId], function(err, results){
+			connection.query("update receiver set payment_received_amount_duffs = ?, payment_received_txid = ?, payment_date = NOW() where receiver_id = ?", [receiver.payment_received_amount_duffs, txid, receiverId], function(err, results){
 				connection.release();
 				if ( err ){
 					return callback(err, results);

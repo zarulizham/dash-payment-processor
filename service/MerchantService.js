@@ -4,8 +4,8 @@ var MerchantRepository = require('../repository/MerchantRepository');
 
 var log = new Logger(AppConfig.logLevel)
 
-var findOrCreateMerchant = function(apiKey, wallet, callback){
-    MerchantRepository.findOrCreateMerchant(apiKey, wallet,function(err,results){
+var findOrCreateMerchant = function(api_key, wallet, callback){
+    MerchantRepository.findOrCreateMerchant(api_key, wallet,function(err,results){
         callback(err,results);
     });
 };

@@ -3,22 +3,23 @@ CREATE DATABASE dashpay DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_
 use dashpay;
 
 CREATE TABLE
-    user
+    merchant
     (
-        username VARCHAR(255) NOT NULL,
-        apiKey VARCHAR(255) NOT NULL,
+        api_key VARCHAR(255) NOT NULL,
+        wallet TEXT NOT NULL,
         created_date DATETIME NOT NULL,
-        PRIMARY KEY (username)
+        PRIMARY KEY (api_key)
     )
     ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE
-    merchant
+    user
     (
-        apiKey VARCHAR(255) NOT NULL,
-        wallet TEXT NOT NULL,
+        username VARCHAR(255) NOT NULL,
+        api_key VARCHAR(255) NOT NULL,
         created_date DATETIME NOT NULL,
-        PRIMARY KEY (apiKey)
+        PRIMARY KEY (username),
+        CONSTRAINT FK_apikey FOREIGN KEY (api_key) REFERENCES merchant (api_key)
     )
     ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

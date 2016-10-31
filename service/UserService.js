@@ -4,8 +4,8 @@ var UserRepository = require('../repository/UserRepository');
 
 var log = new Logger(AppConfig.logLevel)
 
-var findOrCreate = function(username,apiKey,callback){
-	UserRepository.findOrCreate(username,apiKey,function(err,results){
+var findOrCreate = function(username,api_key,callback){
+	UserRepository.findOrCreate(username,api_key,function(err,results){
 		callback(err,results);
 	});
 };
