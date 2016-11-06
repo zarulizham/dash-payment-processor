@@ -9,16 +9,16 @@ var generateReport = function(opts, callback){
 
     // TODO - implement better authentication
 
-    console.log(opts);
+//    console.log(opts);
 
-    if (!opts.xPubKey) return callback('missing xPubKey', null);
+//    if (!opts.xPubKey) return callback('missing xPubKey', null);
 
-    var wallet = new Wallet();
-    wallet.initialize();
+//    var wallet = new Wallet();
+//    wallet.initialize();
 
-    if (opts.xPubKey != wallet.xPubKey) return callback('invalid wallet seed', null);
+//    if (opts.xPubKey != wallet.xPubKey) return callback('invalid wallet seed', null);
 
-    log.debug('Generating Report for ' + opts.xPubKey);
+//    log.debug('Generating Report for ' + opts.xPubKey);
 
     dbPool.getConnection(function(err,connection) {
 
