@@ -43,6 +43,7 @@ var findOrCreate = function(username, api_key, callback){
         			}
         		});
         	}else{
+			connection.release();
         		return callback(err, user);
         	}
         });

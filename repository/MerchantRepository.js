@@ -31,8 +31,10 @@ var findMerchantApi = function(api_key, wallet, callback){
     dbPool.getConnection(function(err,connection){
         findMerchant(api_key, wallet, connection, function(err, result){
             if ( !result ){
+		connection.release();
                 return callback('Error: Merchant API Not Found.', null);
             }else{
+		connection.release();
                 return callback(err, result);
             }
         });
@@ -56,6 +58,7 @@ var findOrCreateMerchant = function(api_key, wallet, callback){
                     }
                 });
             }else{
+		connection.release();
                 return callback(err, user);
             }
         });
