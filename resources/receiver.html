@@ -55,10 +55,9 @@
         function createReceiver() {
 
             data = {
-                "api_key": 'xtV/1fxEXDJaJa8rie/JtQ==',
                 "currency": document.getElementById('createReceiver_currency').value,
                 "amount": document.getElementById('createReceiver_amount').value,
-                "email": document.getElementById('createReceiver_email').value,
+                "username": document.getElementById('createReceiver_username').value,
                 "description": document.getElementById('createReceiver_description').value,
                 "callbackUrl": document.getElementById('createReceiver_callbackUrl').value
             };
@@ -103,8 +102,8 @@
                 <input type="text" class="form-control" id="createReceiver_amount" value="100.07" placeholder="100.07">
             </div>
             <div class="form-group">
-                <label for="createReceiver_email">email:</label>
-                <input type="text" class="form-control" id="createReceiver_email" value="user@example.com" placeholder="user@example.com">
+                <label for="createReceiver_username">username:</label>
+                <input type="text" class="form-control" id="createReceiver_username" value="user@example.com" placeholder="user@example.com">
             </div>
             <div class="form-group">
                 <label for="createReceiver_description">description:</label>
