@@ -12,6 +12,8 @@ CREATE TABLE
     )
     ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+INSERT INTO merchant SET api_key = 'SELF_HOSTED', wallet = 'SELF_HOSTED', created_date = NOW();
+
 CREATE TABLE
     user
     (
