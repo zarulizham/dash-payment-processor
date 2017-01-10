@@ -19,7 +19,7 @@ To download and install this payment service:
     bitcore-node-dash create mynode -d ~/.bitcore/data
     cd mynode
     bitcore-node-dash install insight-api-dash
-    bitcore-node-dash install https://github.com/snogcel/dash-payment-service
+    bitcore-node-dash install dash-payment-service
 
 After you have configured a database (see below), you can run the server by issuing the command:
 

@@ -10,36 +10,77 @@ var CacheRepository       = require('../repository/CacheRepository');
 
 var log = new Logger(AppConfig.logLevel)
 
-var createReceiver = function(username, fiatCode, fiatAmount, description, callbackUrl, callback){
-	WalletService.getNextAddress(function(err, address){
-		if ( err ){
-			return callback(err, null);
-		}else{
-			DashValuationService.getCurrentValue(fiatCode, function(err, value){
+var createReceiver = function(api_key, username, fiatCode, fiatAmount, description, callbackUrl, callback){
 
-				var amountDuffs = (fiatAmount / value) * 100000000
-				var receiver = {
-					receiver_id: RandomString.generate(32),
-					username: username,
-					dash_payment_address: address,
-					amount_fiat: fiatAmount,
-					type_fiat: fiatCode,
-					base_fiat: value,
-					amount_duffs: amountDuffs.toFixed(0),
-					description: description,
-					callback_url: callbackUrl
-				};
+	// check if HD Wallet is set
+	if ( AppConfig.wallet ) {
 
-				ReceiverRepository.createNewReceiver(receiver, function(err, results){
-					if ( err ){
-						callback(err, results);
-					}else{
-						callback(null, receiver);
-					}
+		WalletService.getNextAddress(function(err, address){
+			if ( err ){
+				return callback(err, null);
+			}else{
+				DashValuationService.getCurrentValue(fiatCode, function(err, value){
+
+					var amountDuffs = (fiatAmount / value) * 100000000
+					var receiver = {
+						receiver_id: RandomString.generate(32),
+						api_key: 'SELF_HOSTED',
+						username: username,
+						dash_payment_address: address,
+						amount_fiat: fiatAmount,
+						type_fiat: fiatCode,
+						base_fiat: value,
+						amount_duffs: amountDuffs.toFixed(0),
+						description: description,
+						callback_url: callbackUrl
+					};
+
+					ReceiverRepository.createNewReceiver(receiver, function(err, results){
+						if ( err ){
+							callback(err, results);
+						}else{
+							callback(null, receiver);
+						}
+					});
 				});
-			});
-		}
-	});
+			}
+		});
+
+	} else { // if not, assume we're using bitcore-wallet-service-dash
+
+		WalletService.createNewAddress(api_key, function(err, address){
+			if ( err ){
+				return callback(err, null);
+			}else{
+				DashValuationService.getCurrentValue(fiatCode, function(err, value){
+
+					var amountDuffs = (fiatAmount / value) * 100000000
+					var receiver = {
+						receiver_id: RandomString.generate(32),
+						api_key: api_key,
+						username: username,
+						dash_payment_address: address,
+						amount_fiat: fiatAmount,
+						type_fiat: fiatCode,
+						base_fiat: value,
+						amount_duffs: amountDuffs.toFixed(0),
+						description: description,
+						callback_url: callbackUrl
+					};
+
+					ReceiverRepository.createNewReceiver(receiver, function(err, results){
+						if ( err ){
+							callback(err, results);
+						}else{
+							callback(null, receiver);
+						}
+					});
+				});
+			}
+		});
+
+	}
+
 };
 
 var invokePaymentCallback = function(receiver, tx){
@@ -58,6 +99,7 @@ var invokePaymentCallback = function(receiver, tx){
 			description: receiver.description,
 			payment_received_amount_duffs: receiver.payment_received_amount_duffs,
 			payment_date: receiver.payment_date,
+			txid: tx.txid,
 			txlock: tx.txlock
 		},
 		json: true
@@ -94,7 +136,7 @@ var updateCache = function(receiver){
 
 var processReceivedPayment = function(tx, receiverId, amountDuffs){
 
-	ReceiverRepository.updatePayment(receiverId, amountDuffs, function(err, receiver){
+	ReceiverRepository.updatePayment(tx, receiverId, amountDuffs, function(err, receiver){
 		if ( err ){
 			log.error('Error trying to update a receiver\'s payment. Details: ' + err);
 		}else{

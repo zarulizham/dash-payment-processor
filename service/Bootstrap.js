@@ -8,7 +8,7 @@ var bitcore            = require('bitcore-lib-dash');
 var BlockChainObserver = require('./BlockChainObserver');
 
 
-var log = new Logger(AppConfig.logLevel)
+var log = new Logger(AppConfig.logLevel);
 
 var initialize = function(callback){
 
@@ -17,10 +17,10 @@ var initialize = function(callback){
 	CounterRepository.findOrCreate('hd-wallet-child', function(err, value){
 		log.warning('Next child address for the HD Wallet will be at position ' + value);
 
-		if ( AppConfig.wallet.seed.startsWith('xpub') || AppConfig.wallet.seed.startsWith('tpub') ){
-			
+		if ( AppConfig.wallet && ( AppConfig.wallet.seed.startsWith('xpub') || AppConfig.wallet.seed.startsWith('tpub') ) ){
+
 			// Import the seed as a Bitcore HDPublicKey object
-        	// (seed is a BIP32 extended skey https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki)
+			// (seed is a BIP32 extended skey https://github.com/bitcoin/bips/blob/master/bip-0032.mediawiki)
 			var bip32Seed = HDWallet.ImportXPubKey(AppConfig.wallet.seed, AppConfig.wallet.network);
 
 			log.info('Electrum master key converted to BIP32 format [' + bip32Seed + ']');
@@ -37,32 +37,32 @@ var initialize = function(callback){
 		//    	return callback('Master Key is not valid. Please provide a valid Electrun or BIP32 compatible seed in AppConfig.js');
 		//    }
 
-		CacheRepository.initialize(function(err, results){
+        CacheRepository.initialize(function(err, results){
 
-			var pendingPayments
+            var pendingPayments
 
-			if ( err ){
-				return callback(err, results);
-			}else{
-				
-				log.info(results);
-				BlockChainObserver.start();
+            if ( err ){
+                return callback(err, results);
+            }else{
 
-				pendingPayments = CacheRepository.getPendingPayments();
-				if ( pendingPayments.length > 0 ){
-					for ( var i = 0 ; i < pendingPayments.length ; i++ ){
-						BlockChainObserver.checkForPayment(pendingPayments[i]);
-					}
-				}else{
-					log.debug('No pending payments to wait for.');
-				}
+                log.info(results);
+                BlockChainObserver.start();
 
-				return callback(null, 'Dash Payment Service ready')
-			}
-		});
-		
-		
-	});
+                pendingPayments = CacheRepository.getPendingPayments();
+                if ( pendingPayments.length > 0 ){
+                    for ( var i = 0 ; i < pendingPayments.length ; i++ ){
+                        BlockChainObserver.checkForPayment(pendingPayments[i]);
+                    }
+                }else{
+                    log.debug('No pending payments to wait for.');
+                }
+
+                return callback(null, 'Dash Payment Service ready')
+            }
+        });
+
+
+    });
 };
 
 module.exports = {
