@@ -7,19 +7,6 @@ var log = new Logger(AppConfig.logLevel);
 
 var generateReport = function(opts, callback){
 
-    // TODO - implement better authentication
-
-//    console.log(opts);
-
-//    if (!opts.xPubKey) return callback('missing xPubKey', null);
-
-//    var wallet = new Wallet();
-//    wallet.initialize();
-
-//    if (opts.xPubKey != wallet.xPubKey) return callback('invalid wallet seed', null);
-
-//    log.debug('Generating Report for ' + opts.xPubKey);
-
     dbPool.getConnection(function(err,connection) {
 
         connection.query("SELECT * FROM receiver ORDER BY created_date DESC LIMIT 2000", function(err,result){
