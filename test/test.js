@@ -1,15 +1,15 @@
 var bitcore = require('bitcore-lib-dash');
 var should = require('chai').should();
-// var HDWallet = require('../lib/HDWallet');
-var Wallet = require('../lib/wallet');
+var HDWallet = require('../lib/HDWallet');
+// var Wallet = require('../lib/wallet');
 
 var vec1_m_electrum_main = 'xpub661MyMwAqRbcGnGqkqqi5b8RaA6R6CZmCRz79UrBv3XEuCjbNNtJbs4h9hPmk27R9JY6dh7Fj2AMfRYw8fBp6CBSM39K8byPFZjJMoXQ4Zz';
 var vec2_m_electrum_test = 'xpub661MyMwAqRbcFUcohorhMVaPQ4uxWANGv7EWb6suHiWJ7txVdqykGPJyQLAto3t7UWaTop3oaZJbvgVgmQZuivNYWSchhSyHmZZ5wShpD71';
 var vec3_m_bitcore_main = 'drkvjJe5sJgqomjLnk5GECkZ5qhnfU2T1zUQaLZCh6kVPKk2CNSanUSxaTL9QRwDrD1WaMgzEWCZbZEL3mhQh8srYxLaGn7JDSofMWh1kJnk2yB';
 var vec4_m_bitcore_test = 'DRKVrRjogj3bNiLD8UsktBH9SS9ihVNm1n7zxchfaFAP7ANmDM94J9e9Y99h6cMSipCvAXDcAdDvyxEgJqmnb3iva5CZq9Giwzd1eJ4Bwbd5MFed';
 
-var vec1_m_electrum_main_imported = 'drkvjJe5sJgqomjLowaRpSBJT3LNnwRS97xHgAoiJVNxUeLY2YXKtUVfzBfV4sGQCc12HbghguTPxG2qoH8UX11k9eHxEPQQ3BqZuM7CtUuGXgq';
-var vec2_m_electrum_test_imported = 'DRKVrRjogj3bNiLD8TpH8tmaVQBYhozpHGdqpYDMH1KetGhRNMHBUNtGuWCGGTT17r1dRUJEwiZU8mG4p2ZiruKky3UMXttn1XxHGET8fCmXcea8';
+var vec1_m_electrum_main_imported = 'xpub661MyMwAqRbcGnGqkqqi5b8RaA6R6CZmCRz79UrBv3XEuCjbNNtJbs4h9hPmk27R9JY6dh7Fj2AMfRYw8fBp6CBSM39K8byPFZjJMoXQ4Zz';
+var vec2_m_electrum_test_imported = 'tpubD6NzVbkrYhZ4XGof9zqnZQukjC1cVYsLTjpowew3ddGBsBdCi4pqQpyoeNFgKYqMGR7NRPZg7f8ecrzJAGR9cMpqa3N1NydXMX9VhPkmnAz';
 
 /* 12.1 (proposed) Test Vectors
 var vec1_m_electrum_main_imported = 'dpubZ9169KDAEUnyp5Su4XRCH1BPNk3hDtbWdcneDWP79fRAj3xjuHmyKSmc4Dr9rHxc61KJqaP4VSQtnHggZ1LjFEwozR3G6z9rnDv1E9BVzMW';
@@ -33,8 +33,6 @@ var vec4_m01_bitcore_test = 'yQxHgSs42wgpsYJYhmd8EMKajEcYBBdxyv';
 var vec4_m02_bitcore_test = 'yZFp4SwmqPPULcGS2hA2mi9659mRxy2nNT';
 
 var serverWallet = '{"network":"testnet","xPrivKey":"tprv8ZgxMBicQKsPdELFtySdCVwuwQnN1xmvDZ67S5TQCSBNPeGWgju8XxSBotbbfkmvDEvCsDrBuUjye4iTLANwRze8auAZ1raBxnduHPASf5Z","xPubKey":"tpubDDb5nCWVNuPEbm9ztztimbb5PfZQmMJx4d1r4WaXfkTeTu6kVfToQL2CK5sGgyNPRcr9SmisQTe8kcd2jEh74i4N2UqfGthYvZgTkfRczFX","requestPrivKey":"0dac0c983ad80d23d42bb4eb009ddab21de5c1a6e8db1876eaefd44d2d0b357a","requestPubKey":"03097e5f97099568fe3fb3f31ab8d3eb95e693da92247025c5243acb2568de6da9","copayerId":"ba0147f148e2d029cb4e77a396933024c6f371afb36205938d5192012ef97cd1","publicKeyRing":[{"xPubKey":"tpubDDb5nCWVNuPEbm9ztztimbb5PfZQmMJx4d1r4WaXfkTeTu6kVfToQL2CK5sGgyNPRcr9SmisQTe8kcd2jEh74i4N2UqfGthYvZgTkfRczFX","requestPubKey":"03097e5f97099568fe3fb3f31ab8d3eb95e693da92247025c5243acb2568de6da9"}],"walletId":"31b6260b-61d8-4df6-84de-8c3eebd87fe5","walletName":"My Wallet","m":2,"n":2,"walletPrivKey":"cc493c8b2494f416f68be3a6e5aec33424824582b3ed872c06f852ea845313d7","personalEncryptingKey":"j1psdVjgiov8JRdx4BO9eg==","sharedEncryptingKey":"iwER8uqyB7cOCWcoyhJ4Vg==","copayerName":"Tomas","entropySource":"0df7b792ce8d30d74bbff0708b2221c6b0a0581649619a737e251632d5bcf095","derivationStrategy":"BIP44","account":0,"addressType":"P2SH"}';
-
-/*
 
 describe('IMPORT ELECTRUM-DASH MAINNET', function () {
     var hDPublicKey = HDWallet.ImportXPubKey(vec1_m_electrum_main, bitcore.Networks.mainnet);
@@ -100,7 +98,7 @@ describe('IMPORT BITCORE-DASH TESTNET', function () {
     });
 });
 
-*/
+/*
 
 describe('Bitcore Wallet Service', function() {
     it('will initialize', function() {
@@ -109,7 +107,6 @@ describe('Bitcore Wallet Service', function() {
         wallet.should.not.equal(null);
     });
 
-    /*
     it('will create a new address', function(done) {
         var wallet = new Wallet();
         wallet.createAddress(function(err, res) {
@@ -117,7 +114,6 @@ describe('Bitcore Wallet Service', function() {
             done();
         });
     });
-    */
 
     it('will provide wallet tx history', function(done) {
         var wallet = new Wallet();
@@ -162,3 +158,5 @@ describe('Bitcore Wallet Service', function() {
     });
 
 });
+
+*/
