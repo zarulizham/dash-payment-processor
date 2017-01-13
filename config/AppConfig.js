@@ -4,7 +4,7 @@ var bitcore = require('bitcore-lib-dash');
 var config = {
     development: {
         app: {
-            name: 'dash-payment-service'
+            name: 'dash-payment-processor'
         },
         insight: 'http://localhost:3001/',
         wallet: {
@@ -22,7 +22,7 @@ var config = {
     },
     production: {
         app: {
-            name: 'dash-payment-service'
+            name: 'dash-payment-processor'
         },
         insight: 'http://localhost:3001/',
         wallet: {

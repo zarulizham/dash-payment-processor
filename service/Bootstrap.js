@@ -57,7 +57,7 @@ var initialize = function(callback){
                     log.debug('No pending payments to wait for.');
                 }
 
-                return callback(null, 'Dash Payment Service ready')
+                return callback(null, 'Dash Payment Processor ready')
             }
         });
 

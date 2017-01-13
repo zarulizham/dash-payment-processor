@@ -1,12 +1,12 @@
 {
-  "name": "dash-payment-service",
-  "version": "0.0.5",
+  "name": "dash-payment-processor",
+  "version": "0.0.1",
   "scripts": {
     "test": "mocha test/test.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/snogcel/dash-payment-service.git"
+    "url": "git+https://github.com/snogcel/dash-payment-processor.git"
   },
   "main": "lib",
   "bitcoreNode": "lib",
@@ -34,7 +34,7 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/snogcel/dash-payment-service/issues"
+    "url": "https://github.com/snogcel/dash-payment-processor/issues"
   },
-  "homepage": "https://github.com/snogcel/dash-payment-service#readme"
+  "homepage": "https://github.com/snogcel/dash-payment-processor#readme"
 }

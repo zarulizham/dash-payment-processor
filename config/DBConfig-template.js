@@ -8,6 +8,14 @@ var config = {
     username: 'username',
     password: 'password',
     debug: false
+  },
+  production: {
+    host: 'localhost',
+    port: 3306,
+    database: 'dashpay',
+    username: 'username',
+    password: 'password',
+    debug: false
   }
 };
 
